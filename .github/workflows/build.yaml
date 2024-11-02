@@ -29,10 +29,10 @@ jobs:
           echo "-- Before --"
           df -h
           sudo rm -rf /usr/local/bin/aliyun
-          sudo apt-get remove -y apache2 azure-cli podman buildah skopeo firefox google-chrome-stable google-cloud-cli heroku temurin-*-jdk ant ant-optional kubectl microsoft-edge-stable apt-transport-https mono-complete nuget mssql-tools unixodbc-dev mysql-client mysql-server libmysqlclient-dev nginx php php-pear snmp postgresql-* libpq-dev powershell r-base ruby-full
-          sudo apt-get remove -y '^dotnet-.*'
+          sudo apt-get purge -y apache2 azure-cli podman buildah skopeo firefox google-chrome-stable google-cloud-cli heroku temurin-*-jdk ant ant-optional kubectl microsoft-edge-stable apt-transport-https mono-complete nuget mssql-tools unixodbc-dev mysql-client mysql-server libmysqlclient-dev nginx php php-pear snmp postgresql-* libpq-dev powershell r-base ruby-full
+          sudo apt-get purge -y '^dotnet-.*'
           sudo dpkg -r session-manager-plugin
-          sudo apt-get autoremove -y
+          sudo apt-get autoremove --purge -y
           sudo apt-get clean
           sudo rm -rf /usr/local/bin/aws
           sudo rm -rf /usr/local/bin/aws_completer
