@@ -28,12 +28,11 @@ jobs:
         run: |
           echo "-- Before --"
           df -h
-          sudo rm -rf /usr/local/bin/aliyun
-          sudo apt-get purge -y apache2 azure-cli podman buildah skopeo firefox google-chrome-stable google-cloud-cli heroku temurin-*-jdk ant ant-optional kubectl microsoft-edge-stable apt-transport-https mono-complete nuget mssql-tools unixodbc-dev mysql-client mysql-server libmysqlclient-dev nginx php php-pear snmp postgresql-* libpq-dev powershell r-base ruby-full
-          sudo apt-get purge -y '^dotnet-.*'
+          sudo apt-get purge -y apache2 firefox google-chrome-stable temurin-*-jdk ant ant-optional microsoft-edge-stable mono-complete nuget mssql-tools unixodbc-dev mysql-client mysql-server libmysqlclient-dev nginx php php-pear postgresql-* libpq-dev powershell r-base ruby-full '^dotnet-.*'
           sudo dpkg -r session-manager-plugin
           sudo apt-get autoremove --purge -y
           sudo apt-get clean
+          sudo rm -rf /usr/local/bin/aliyun
           sudo rm -rf /usr/local/bin/aws
           sudo rm -rf /usr/local/bin/aws_completer
           sudo rm -rf /usr/local/aws-cli
@@ -86,8 +85,7 @@ jobs:
 
       - name: make report
         if: |
-          matrix.os == 'ubuntu-24.04'
-          && (matrix.mode == 'linux' || matrix.mode == 'newlib')
+          (matrix.mode == 'linux' || matrix.mode == 'newlib')
           && matrix.compiler == 'gcc'
         run: |
           sudo make report-${{ matrix.mode }} -j $(nproc)
