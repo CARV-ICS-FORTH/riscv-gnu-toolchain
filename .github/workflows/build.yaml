@@ -142,7 +142,7 @@ jobs:
 
       - name: tarball build
         run: |
-          ./.github/dedup-dir.sh /opt/
+          ./.github/dedup-dir.sh /opt/riscv/
           XZ_OPT="-e -T0" tar cvJf riscv.tar.xz -C /opt/ riscv/
 
       - name: generate prebuilt toolchain name
@@ -249,7 +249,7 @@ jobs:
 
       - name: tarball build
         run: |
-          ./.github/dedup-dir.sh /opt/
+          ./.github/dedup-dir.sh /opt/riscv/
           XZ_OPT="-e -T0" tar cvJf riscv.tar.xz -C /opt/ riscv/
 
       - name: generate prebuilt toolchain name
