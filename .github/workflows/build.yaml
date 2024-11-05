@@ -58,7 +58,7 @@ jobs:
         run: |
           echo "-- Before --"
           df -h
-          sudo apt-get purge -y firefox google-chrome-stable temurin-*-jdk ant ant-optional microsoft-edge-stable mono-complete nuget mssql-tools unixodbc-dev mysql-client libmysqlclient-dev php php-pear libpq-dev powershell r-base ruby-full '^dotnet-.*'
+          sudo apt-get purge -y firefox google-chrome-stable temurin-*-jdk microsoft-edge-stable php php-pear powershell r-base ruby-full '^dotnet-.*'
           sudo apt-get autoremove --purge -y
           sudo apt-get clean
           sudo rm -rf /usr/local/bin/aliyun
