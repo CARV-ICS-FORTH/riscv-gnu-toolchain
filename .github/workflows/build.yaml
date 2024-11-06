@@ -56,8 +56,8 @@ jobs:
       - name: Remove unneeded frameworks to recover disk space
         run: |
           echo "-- Before --"
-          df -h
-          sudo apt-get purge -y firefox google-chrome-stable temurin-*-jdk microsoft-edge-stable php php-pear r-base ruby-full '^dotnet-.*'
+          df -hT
+          sudo apt-get purge -y firefox google-chrome-stable temurin-*-jdk ant microsoft-edge-stable php php-pear r-base ruby-full '^dotnet-.*'
           sudo apt-get autoremove --purge -y
           sudo apt-get clean
           sudo rm -rf /usr/local/bin/aliyun
@@ -93,7 +93,7 @@ jobs:
           sudo rm -rf /usr/local/share/vcpkg
           sudo rm -rf /usr/local/lib/android
           echo "-- After --"
-          df -h
+          df -hT
 
       - uses: actions/checkout@v4
 
