@@ -22,7 +22,6 @@ jobs:
       - name: Storage size optimization
         run: |
           git submodule foreach 'git maintenance run'
-          ./.github/dedup-dir.sh ./.git/modules
 
       - name: Setup submodule cache
         uses: actions/cache@v4
@@ -44,7 +43,7 @@ jobs:
     needs: [submodule_cache]
     strategy:
       matrix:
-        os:     [ubuntu-latest]
+        os:     [ubuntu-22.04, ubuntu-24.04]
         mode:   [newlib, linux, musl, uclibc]
         target: [rv32gc-ilp32d, rv64gc-lp64d]
         compiler: [gcc, llvm]
@@ -58,8 +57,7 @@ jobs:
         run: |
           echo "-- Before --"
           df -h
-          sudo apt-get purge -y apache2 firefox google-chrome-stable temurin-*-jdk ant ant-optional microsoft-edge-stable mono-complete nuget mssql-tools unixodbc-dev mysql-client mysql-server libmysqlclient-dev nginx php php-pear postgresql-* libpq-dev powershell r-base ruby-full '^dotnet-.*'
-          sudo dpkg -r session-manager-plugin
+          sudo apt-get purge -y firefox google-chrome-stable temurin-*-jdk microsoft-edge-stable php php-pear r-base ruby-full '^dotnet-.*'
           sudo apt-get autoremove --purge -y
           sudo apt-get clean
           sudo rm -rf /usr/local/bin/aliyun
@@ -130,7 +128,8 @@ jobs:
 
       - name: make report
         if: |
-          (matrix.mode == 'linux' || matrix.mode == 'newlib')
+          matrix.os == 'ubuntu-24.04'
+          && (matrix.mode == 'linux' || matrix.mode == 'newlib')
           && matrix.compiler == 'gcc'
         run: |
           sudo make report-${{ matrix.mode }} -j $(nproc)
@@ -142,7 +141,9 @@ jobs:
           sudo du -hs / 2> /dev/null || true
 
       - name: tarball build
-        run: tar czvf riscv.tar.gz -C /opt/ riscv/
+        run: |
+          ./.github/dedup-dir.sh /opt/riscv/
+          XZ_OPT="-e -T0" tar cvJf riscv.tar.xz -C /opt/ riscv/
 
       - name: generate prebuilt toolchain name
         id:   toolchain-name-generator
@@ -163,10 +164,11 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.toolchain-name-generator.outputs.TOOLCHAIN_NAME }}
-          path: riscv.tar.gz
+          path: riscv.tar.xz
 
   test-sim:
     runs-on: ${{ matrix.os }}
+    needs: [submodule_cache]
     strategy:
       matrix:
         os:     [ubuntu-24.04]
@@ -187,6 +189,21 @@ jobs:
 
       - name: install dependencies
         run: sudo ./.github/setup-apt.sh
+
+      - name: Load submodule cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            binutils
+            gcc
+            gdb
+            glibc
+            llvm
+            musl
+            newlib
+            uclibc-ng
+            .git/modules
+          key: submodule-cache-${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: build toolchain
         run: |
@@ -231,7 +248,9 @@ jobs:
           sudo make report-${{ matrix.mode }} -j $(nproc)
 
       - name: tarball build
-        run: tar czvf riscv.tar.gz -C /opt/ riscv/
+        run: |
+          ./.github/dedup-dir.sh /opt/riscv/
+          XZ_OPT="-e -T0" tar cvJf riscv.tar.xz -C /opt/ riscv/
 
       - name: generate prebuilt toolchain name
         id:   toolchain-name-generator
@@ -252,4 +271,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.toolchain-name-generator.outputs.TOOLCHAIN_NAME }}
-          path: riscv.tar.gz
+          path: riscv.tar.xz

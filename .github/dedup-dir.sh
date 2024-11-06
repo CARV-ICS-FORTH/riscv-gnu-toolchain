@@ -3,7 +3,7 @@
 function deduplicate_files() {
 	local DUPLICATES=()
 	local DIR=${1}
-	local OLDIFS=${IFS}
+	local IFS=$'\n'
 	local LINK_CHECK=""
 
 	readarray -t DUPLICATES < <(for i in `find ${DIR} -type f ! -empty`; do sha1sum ${i}; done | sort | uniq -w 40 --all-repeated=separate)
@@ -20,6 +20,8 @@ function deduplicate_files() {
 			fi
 		fi
 	done
+
+	return 0
 }
 
 deduplicate_files ${1}
