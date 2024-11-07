@@ -1,6 +1,7 @@
 #!/bin/bash
 
 WAIT=1
+RMONLY=0
 
 PACKAGES=(
 	"firefox"
@@ -31,9 +32,11 @@ PATHS=(
 
 function cleanup_packages()
 {
-	apt-get purge -y "${PACKAGES[@]}"
-	apt-get autoremove --purge -y
-	apt-get clean
+	if [[ ${RMONLY} == 0 ]]; then
+		apt-get purge -y "${PACKAGES[@]}"
+		apt-get autoremove --purge -y
+		apt-get clean
+	fi
 }
 
 function cleanup_paths()
