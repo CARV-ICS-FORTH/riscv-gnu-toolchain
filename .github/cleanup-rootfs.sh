@@ -3,14 +3,11 @@
 PACKAGES=(
 	"firefox"
 	"google-chrome-stable"
-	"temurin-*-jdk"
-	"ant"
 	"microsoft-edge-stable"
-	"php"
 	"php-pear"
 	"r-base"
 	"ruby-full"
-	"'^dotnet-.*'"
+	"^dotnet-.*"
 )
 
 PATHS=(
@@ -68,7 +65,7 @@ function cleanup_paths()
 	echo "---=== Before ===---"
 	df -hT
 	for i in "${PATHS[@]}"; do
-		du -s -u "${i}"
+		du -s -h "${i}"
 		rm -rf "${i}"
 	done
 	echo "---=== After ===---"
