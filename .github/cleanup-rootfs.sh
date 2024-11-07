@@ -1,5 +1,7 @@
 #!/bin/bash
 
+WAIT=1
+
 PACKAGES=(
 	"firefox"
 	"google-chrome-stable"
@@ -37,15 +39,21 @@ function cleanup_packages()
 function cleanup_paths()
 {
 	for i in "${PATHS[@]}"; do
-#		du -s -h "${i}"
 		rm -rf "${i}" &
 	done
-	wait
+	if [[ ${WAIT} == 1 ]]; do
+		wait
+	fi
 }
 
-echo "---=== Before ===---"
-df -hT
-cleanup_packages
-cleanup_paths
-echo "---=== After ===---"
-df -hT
+if [[ ${WAIT} == 1 ]]; do
+	echo "---=== Before ===---"
+	df -hT
+	cleanup_packages
+	cleanup_paths
+	echo "---=== After ===---"
+	df -hT
+else
+	cleanup_packages
+	cleanup_paths
+fi
