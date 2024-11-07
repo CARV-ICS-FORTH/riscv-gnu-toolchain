@@ -1,6 +1,10 @@
 #!/bin/bash
 
-WAIT=1
+# There is no need to wait for this to finish, at least the rm part can be done
+# while the process moves forward (for apt we'll need to wait for it to finish
+# before we install dependencies later on, but it'll only give us a 1-3GBs so
+# we can skip it.
+WAIT=0
 RMONLY=1
 
 PACKAGES=(
