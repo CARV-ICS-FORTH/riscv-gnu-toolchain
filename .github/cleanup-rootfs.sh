@@ -1,7 +1,7 @@
 #!/bin/bash
 
 WAIT=1
-RMONLY=0
+RMONLY=1
 
 PACKAGES=(
 	"firefox"
