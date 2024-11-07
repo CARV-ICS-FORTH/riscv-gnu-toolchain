@@ -79,7 +79,7 @@ jobs:
       - name: build toolchain
         run: |
           TARGET_TUPLE=($(echo ${{ matrix.target }} | tr "-" "\n"))
-          BUILD_TOOLCHAIN="./configure --prefix=/opt/riscv --with-arch=${TARGET_TUPLE[0]} --with-abi=${TARGET_TUPLE[1]}"
+          BUILD_TOOLCHAIN="./configure --prefix=/mnt/riscv --with-arch=${TARGET_TUPLE[0]} --with-abi=${TARGET_TUPLE[1]}"
           if [ "${{ matrix.compiler }}" == "llvm" ]; then # build toolchain with llvm
             $BUILD_TOOLCHAIN --enable-llvm
           else
@@ -103,8 +103,8 @@ jobs:
 
       - name: tarball build
         run: |
-          ./.github/dedup-dir.sh /opt/riscv/
-          XZ_OPT="-e -T0" tar cvJf riscv.tar.xz -C /opt/ riscv/
+          ./.github/dedup-dir.sh /mnt/riscv/
+          XZ_OPT="-e -T0" tar cvJf riscv.tar.xz -C /mnt/ riscv/
 
       - name: generate prebuilt toolchain name
         id:   toolchain-name-generator
@@ -169,7 +169,7 @@ jobs:
       - name: build toolchain
         run: |
           TARGET_TUPLE=($(echo ${{ matrix.target }} | tr "-" "\n"))
-          ./configure --prefix=/opt/riscv --with-arch=${TARGET_TUPLE[0]} --with-abi=${TARGET_TUPLE[1]} --with-sim=${{ matrix.sim }}
+          ./configure --prefix=/mnt/riscv --with-arch=${TARGET_TUPLE[0]} --with-abi=${TARGET_TUPLE[1]} --with-sim=${{ matrix.sim }}
           make -j $(nproc) ${{ matrix.mode }}
 
       - name: make report
@@ -201,7 +201,7 @@ jobs:
       - name: build toolchain
         run: |
           TARGET_TUPLE=($(echo ${{ matrix.target }} | tr "-" "\n"))
-          ./configure --prefix=/opt/riscv --with-arch=${TARGET_TUPLE[0]} --with-abi=${TARGET_TUPLE[1]} --enable-multilib
+          ./configure --prefix=/mnt/riscv --with-arch=${TARGET_TUPLE[0]} --with-abi=${TARGET_TUPLE[1]} --enable-multilib
           sudo make -j $(nproc) ${{ matrix.mode }}
 
       - name: make report
@@ -210,8 +210,8 @@ jobs:
 
       - name: tarball build
         run: |
-          ./.github/dedup-dir.sh /opt/riscv/
-          XZ_OPT="-e -T0" tar cvJf riscv.tar.xz -C /opt/ riscv/
+          ./.github/dedup-dir.sh /mnt/riscv/
+          XZ_OPT="-e -T0" tar cvJf riscv.tar.xz -C /mnt/ riscv/
 
       - name: generate prebuilt toolchain name
         id:   toolchain-name-generator
