@@ -36,15 +36,16 @@ function cleanup_packages()
 
 function cleanup_paths()
 {
-	echo "---=== Before ===---"
-	df -hT
 	for i in "${PATHS[@]}"; do
-		du -s -h "${i}"
-		rm -rf "${i}"
+		du -s -h "${i}" &
+		rm -rf "${i}" &
 	done
-	echo "---=== After ===---"
-	df -hT
+	wait
 }
 
+echo "---=== Before ===---"
+df -hT
 cleanup_packages
 cleanup_paths
+echo "---=== After ===---"
+df -hT
