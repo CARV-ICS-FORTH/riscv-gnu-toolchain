@@ -41,12 +41,12 @@ function cleanup_paths()
 	for i in "${PATHS[@]}"; do
 		rm -rf "${i}" &
 	done
-	if [[ ${WAIT} == 1 ]]; do
+	if [[ ${WAIT} == 1 ]]; then
 		wait
 	fi
 }
 
-if [[ ${WAIT} == 1 ]]; do
+if [[ ${WAIT} == 1 ]]; then
 	echo "---=== Before ===---"
 	df -hT
 	cleanup_packages
