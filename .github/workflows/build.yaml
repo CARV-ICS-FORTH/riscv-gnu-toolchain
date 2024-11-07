@@ -54,46 +54,7 @@ jobs:
             compiler: llvm
     steps:
       - name: Remove unneeded frameworks to recover disk space
-        run: |
-          echo "-- Before --"
-          df -hT
-          sudo apt-get purge -y firefox google-chrome-stable temurin-*-jdk ant microsoft-edge-stable php php-pear r-base ruby-full '^dotnet-.*'
-          sudo apt-get autoremove --purge -y
-          sudo apt-get clean
-          sudo rm -rf /usr/local/bin/aliyun
-          sudo rm -rf /usr/local/bin/aws
-          sudo rm -rf /usr/local/bin/aws_completer
-          sudo rm -rf /usr/local/aws-cli
-          sudo rm -rf /usr/local/bin/sam
-          sudo rm -rf /usr/local/aws-sam-cli
-          sudo rm -rf /usr/local/bin/azcopy
-          sudo rm -rf /usr/local/bin/azcopy10
-          sudo rm -rf /opt/az/azcliextensions
-          sudo rm -rf /usr/local/bin/bazel
-          sudo rm -rf /usr/local/bin/bicep
-          sudo rm -rf /opt/hostedtoolcache
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /usr/local/bin/rebar3
-          sudo rm -rf /usr/local/share/gecko_driver
-          sudo rm -rf /usr/local/share/chromedriver-linux64
-          sudo rm -rf /usr/local/share/chromium
-          sudo rm -rf /usr/local/.ghcup/
-          sudo rm -rf /home/linuxbrew
-          sudo rm -rf /usr/share/apache-maven-*
-          sudo rm -rf /usr/share/gradle
-          sudo rm -rf /usr/local/julia*
-          sudo rm -rf /usr/share/kotlinc
-          sudo rm -rf /usr/local/bin/minikube
-          sudo rm -rf /usr/local/share/edge_driver
-          sudo rm -rf /usr/local/lib/node_modules/*
-          sudo rm -rf /usr/local/bin/oc
-          sudo rm -rf /usr/local/bin/oras
-          sudo rm -rf /usr/share/java/selenium-server-*
-          sudo rm -rf /usr/share/swift
-          sudo rm -rf /usr/local/share/vcpkg
-          sudo rm -rf /usr/local/lib/android
-          echo "-- After --"
-          df -hT
+        run: sudo ./.github/cleanup-rootfs.sh
 
       - uses: actions/checkout@v4
 
