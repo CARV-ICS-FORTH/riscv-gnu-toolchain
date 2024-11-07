@@ -5,9 +5,10 @@ PACKAGES=(
 	"google-chrome-stable"
 	"microsoft-edge-stable"
 	"php-pear"
-	"r-base"
 	"ruby-full"
+	"^aspnetcore-.*"
 	"^dotnet-.*"
+	"powershell*"
 )
 
 PATHS=(
@@ -28,6 +29,7 @@ PATHS=(
 	"/usr/local/share/gecko_driver"
 	"/usr/local/share/chromedriver-linux64"
 	"/usr/local/share/chromium"
+	"/opt/ghc"
 	"/usr/local/.ghcup/"
 	"/home/linuxbrew"
 	"/usr/share/apache-maven-*"
@@ -48,13 +50,6 @@ PATHS=(
 
 function cleanup_packages()
 {
-	for i in "${PACKAGES[@]}"; do
-		dpkg -L "${i}" >> /tmp/flist_a
-	done
-
-	cat /tmp/flist_a | sed 's:/[^/]*$::' | sort -u >> /tmp/flist_b
-	cat /tmp/flist_b
-
 	apt-get purge -y "${PACKAGES[@]}"
 	apt-get autoremove --purge -y
 	apt-get clean
