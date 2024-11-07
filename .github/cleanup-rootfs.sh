@@ -37,7 +37,7 @@ function cleanup_packages()
 function cleanup_paths()
 {
 	for i in "${PATHS[@]}"; do
-		du -s -h "${i}" &
+#		du -s -h "${i}"
 		rm -rf "${i}" &
 	done
 	wait
