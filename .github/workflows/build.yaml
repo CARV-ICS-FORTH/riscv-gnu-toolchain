@@ -85,7 +85,7 @@ jobs:
           else
             $BUILD_TOOLCHAIN
           fi
-          sudo make -j $(nproc) ${{ matrix.mode }}
+          make -j $(nproc) ${{ matrix.mode }}
 
       - name: make report
         if: |
@@ -93,7 +93,7 @@ jobs:
           && (matrix.mode == 'linux' || matrix.mode == 'newlib')
           && matrix.compiler == 'gcc'
         run: |
-          sudo make report-${{ matrix.mode }} -j $(nproc)
+          make report-${{ matrix.mode }} -j $(nproc)
 
       - name: recover space
         run: |
@@ -103,6 +103,7 @@ jobs:
 
       - name: tarball build
         run: |
+          du -s -h /mnt/riscv
           ./.github/dedup-dir.sh /mnt/riscv/
           XZ_OPT="-e -T0" tar cvJf riscv.tar.xz -C /mnt/ riscv/
 
