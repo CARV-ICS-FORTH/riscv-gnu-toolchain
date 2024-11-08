@@ -9,6 +9,20 @@ on:
     branches:
       - master
 
+env:
+  submodule_paths: |
+    binutils
+    dejagnu
+    gcc
+    gdb
+    glibc
+    llvm
+    musl
+    newlib
+    qemu
+    uclibc-ng
+    .git/modules
+
 jobs:
   submodule_cache:
     name: Initialize submodule cache
@@ -29,18 +43,7 @@ jobs:
       - name: Setup submodule cache
         uses: actions/cache@v4
         with:
-          path: |
-            binutils
-            gcc
-            gdb
-            glibc
-            llvm
-            musl
-            newlib
-            uclibc-ng
-            qemu
-            dejagnu
-            .git/modules
+          path: ${{ env.submodule_paths }}
           key: submodule-cache-${{ github.run_id }}-${{ github.run_attempt }}
 
   build:
@@ -69,18 +72,7 @@ jobs:
       - name: Load submodule cache
         uses: actions/cache/restore@v4
         with:
-          path: |
-            binutils
-            gcc
-            gdb
-            glibc
-            llvm
-            musl
-            newlib
-            uclibc-ng
-            qemu
-            dejagnu
-            .git/modules
+          path: ${{ env.submodule_paths }}
           key: submodule-cache-${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: build toolchain
@@ -152,18 +144,7 @@ jobs:
       - name: Load submodule cache
         uses: actions/cache/restore@v4
         with:
-          path: |
-            binutils
-            gcc
-            gdb
-            glibc
-            llvm
-            musl
-            newlib
-            uclibc-ng
-            qemu
-            dejagnu
-            .git/modules
+          path: ${{ env.submodule_paths }}
           key: submodule-cache-${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: build toolchain
