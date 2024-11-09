@@ -34,7 +34,7 @@ jobs:
         run: sudo ./.github/cleanup-rootfs.sh
 
       - name: Checkout required submodules
-        run: git submodule update --init -j $(nproc) --depth 1 binutils gcc gdb glibc llvm musl newlib uclibc-ng qemu dejagnu
+        run: git submodule update --init -j $(nproc) --depth 1 $(echo ${submodule_paths} | sed '$d' | tr '\n' ' ')
 
       - name: Storage size optimization
         run: |
