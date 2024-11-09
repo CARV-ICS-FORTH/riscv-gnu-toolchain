@@ -38,6 +38,7 @@ jobs:
 
       - name: Storage size optimization
         run: |
+          echo "Submodules env var:" ${{ env.submodule_paths }}
           git submodule foreach 'git maintenance run'
 
       - name: Setup submodule cache
