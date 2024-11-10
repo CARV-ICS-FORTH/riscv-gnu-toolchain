@@ -44,6 +44,7 @@ jobs:
       - name: Setup submodule cache
         uses: actions/cache@v4
         with:
+          enableCrossOsArchive: true
           path: ${{ env.submodule_paths }}
           key: submodule-cache-${{ github.run_id }}-${{ github.run_attempt }}
 
@@ -73,6 +74,7 @@ jobs:
       - name: Load submodule cache
         uses: actions/cache/restore@v4
         with:
+          enableCrossOsArchive: true
           path: ${{ env.submodule_paths }}
           key: submodule-cache-${{ github.run_id }}-${{ github.run_attempt }}
 
@@ -145,6 +147,7 @@ jobs:
       - name: Load submodule cache
         uses: actions/cache/restore@v4
         with:
+          enableCrossOsArchive: true
           path: ${{ env.submodule_paths }}
           key: submodule-cache-${{ github.run_id }}-${{ github.run_attempt }}
 
